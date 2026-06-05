@@ -31,7 +31,6 @@ PhotosApp allows users to create an account, upload images and videos, view them
 
 ## Project Structure
 
-```
 src/main/java/uz/aytjanov/googlephotosclone/
 ├── model/          // JPA entities (User, Photo/Media)
 ├── repository/     // Spring Data repositories
@@ -43,7 +42,6 @@ src/main/resources/
 ├── templates/      // Thymeleaf templates (login, register, gallery, upload)
 ├── static/         // CSS, JS, images
 └── application.properties
-```
 
 ## Local Development
 
