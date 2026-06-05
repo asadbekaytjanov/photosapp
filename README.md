@@ -3,7 +3,7 @@
 
 A full-stack web application for managing personal photos and videos, built with **Java, Spring Boot, PostgreSQL, and Thymeleaf**.
 
-**Live Deployment:** [https://photosapp-1rxv.onrender.com](https://photosapp-1rxv.onrender.com)
+**Live Deployment:** [https://photosapp-1rxv.onrender.com]
 
 ## Overview
 
@@ -54,30 +54,24 @@ src/main/resources/
 
 ### Setup
 1. Clone the repository:
-   ```bash
    git clone https://github.com/asadbekaytjanov/photosapp.git
    cd photosapp
-   ```
 2. Configure the database connection in `src/main/resources/application.properties` (or set environment variables). Default configuration expects environment variables:
    - `DATABASE_URL` (JDBC format, e.g., `jdbc:postgresql://host:port/dbname`)
    - `DATABASE_USERNAME`
    - `DATABASE_PASSWORD`
 3. Build and run:
-   ```bash
    mvn clean package -DskipTests
    java -jar target/*.jar
-   ```
 4. Open `http://localhost:8080` in your browser.
 
 ### Running with Docker
-```bash
 docker build -t photosapp .
 docker run -p 8080:8080 \
   -e DATABASE_URL=jdbc:postgresql://... \
   -e DATABASE_USERNAME=... \
   -e DATABASE_PASSWORD=... \
   photosapp
-```
 
 ## Deployment
 
