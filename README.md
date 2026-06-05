@@ -3,7 +3,7 @@
 
 A full-stack web application for managing personal photos and videos, built with **Java, Spring Boot, PostgreSQL, and Thymeleaf**.
 
-**Live Deployment:** [https://photosapp-1rxv.onrender.com]
+**Live Deployment:** [https://photosapp-0kg0.onrender.com/]
 
 ## Overview
 
