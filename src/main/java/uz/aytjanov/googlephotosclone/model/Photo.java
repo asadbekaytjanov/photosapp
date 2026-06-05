@@ -1,0 +1,65 @@
+package uz.aytjanov.googlephotosclone.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+
+@Entity
+@Table (name = "photos")
+public class Photo {
+    @jakarta.persistence.Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String fileName;
+    private String contentType;
+    @JsonIgnore
+    private byte[] data;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+}
