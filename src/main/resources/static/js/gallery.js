@@ -48,14 +48,22 @@ function renderPhotos(photos) {
             media = document.createElement('video');
             media.className = 'media-video';
             media.src = photo.viewUrl;
-            media.controls = true;
+            media.muted = true;
+            media.preload = 'metadata';
         } else {
             media = document.createElement('img');
             media.className = 'media-img';
             media.src = photo.viewUrl;
             media.alt = photo.fileName;
         }
-        card.appendChild(media);
+
+        const mediaLink = document.createElement('a');
+        mediaLink.href = photo.viewUrl;
+        mediaLink.target = '_blank';
+        mediaLink.rel = 'noopener noreferrer';
+        mediaLink.style.display = 'block';
+        mediaLink.appendChild(media);
+        card.appendChild(mediaLink);
 
         const body = document.createElement('div');
         body.className = 'card-body';
@@ -67,6 +75,13 @@ function renderPhotos(photos) {
 
         const actions = document.createElement('div');
         actions.className = 'card-actions';
+
+        const viewLink = document.createElement('a');
+        viewLink.href = photo.viewUrl;
+        viewLink.target = '_blank';
+        viewLink.rel = 'noopener noreferrer';
+        viewLink.textContent = 'View';
+        actions.appendChild(viewLink);
 
         const downloadLink = document.createElement('a');
         downloadLink.href = `/api/photos/${photo.id}/download`;
