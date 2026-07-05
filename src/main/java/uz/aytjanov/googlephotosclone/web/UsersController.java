@@ -5,16 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.aytjanov.googlephotosclone.service.UsersService;
 
-@Controller
+@RestController
 public class UsersController {
    private final UsersService usersService;
 
    public UsersController(UsersService usersService) {
         this.usersService = usersService;
-   }
-   @GetMapping("/register")
-   public String registerPage() {
-       return "register";
    }
    @PostMapping("/register")
    public String createUser(@RequestParam String username, @RequestParam String password, Model model) {

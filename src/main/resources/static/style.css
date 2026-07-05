@@ -312,6 +312,9 @@ header h1 {
     background: #edf2f7;
     color: var(--text);
     transition: background 0.2s;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
 }
 
 .card-actions a:hover {

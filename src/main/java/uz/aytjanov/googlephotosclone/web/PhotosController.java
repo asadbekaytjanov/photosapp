@@ -1,102 +1,122 @@
 package uz.aytjanov.googlephotosclone.web;
 
 import jakarta.servlet.http.HttpSession;
-import org.hibernate.annotations.NotFound;
 import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import uz.aytjanov.googlephotosclone.model.Photo;
-import uz.aytjanov.googlephotosclone.model.User;
 import uz.aytjanov.googlephotosclone.service.PhotosService;
 import uz.aytjanov.googlephotosclone.service.UsersService;
-
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.Map;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
-@Controller
+@RestController
 public class PhotosController {
     private final PhotosService photosService;
     private final UsersService usersService;
+    private Long requireUserId(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        return userId;
+    }
+    private Photo getPhoto (Long id) {
+        Photo photo = photosService.getPhoto(id);
+        if (photo == null) throw new ResponseStatusException(NOT_FOUND);
+        return photo;
+    }
 
     public PhotosController(PhotosService photosService, UsersService usersService) {
         this.photosService = photosService;
         this.usersService = usersService;
     }
-    @GetMapping("/")
-    public String mainPage() {
-        return "redirect:/login";
-    }
+   public record PhotoListDto (
+           Long id,
+           String fileName,
+           String contentType,
+           String viewUrl
+   ) {}
+   public record PhotoDto (
+           String fileName,
+           String contentType
+   ) {}
 
-    @GetMapping("/gallery")
-    public String userPhotos(HttpSession session, Model model) {
-        if (session.getAttribute("userId") == null) {
-            return "redirect:/login";
-        } else {
-            model.addAttribute("username", session.getAttribute("username"));
-            model.addAttribute("mediaList", photosService.getMediaByUserid((Long) session.getAttribute("userId")));
-            return "gallery";
+   @GetMapping("/api/photos")
+   public ResponseEntity<?> photos(HttpSession session) {
+        Long userId = requireUserId(session);
+        var photos = photosService.getMediaByUserid(userId);
+        var result = new ArrayList<PhotoListDto>();
+        for (Photo photo : photos) {
+            result.add(
+                    new PhotoListDto(
+                            photo.getId(),
+                            photo.getFileName(),
+                            photo.getContentType(),
+                            "/api/photos/" + photo.getId()
+                    )
+            );
         }
-    }
-   @GetMapping("/photos/{id}/open")
+        return ResponseEntity.ok(result);
+   }
+   @GetMapping("/api/photos/{id}")
    public ResponseEntity<byte[]> openFile(@PathVariable Long id, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            return ResponseEntity.status(401).build();
-        }
+        Long userId = requireUserId(session);
         Photo photo = photosService.getPhoto(id);
         if (photo == null || !photo.getUser().getId().equals(userId)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok()
-                    .header("Content-Type", photo.getContentType())
-                .body(photo.getData());
+        return ResponseEntity.ok().header("Content-Type", photo.getContentType()).body(photo.getData());
    }
-   @GetMapping("/logout")
-   public String logout(HttpSession session) {
+   @PostMapping("/api/logout")
+   public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/login";
+        return ResponseEntity.ok(Map.of("message", "Session invalidated"));
    }
 
-    @GetMapping("/upload")
-    public String upload(){
-        return "/upload";
-    }
-    @PostMapping("/upload")
-    public String create(@RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+    @PostMapping("/api/photos")
+    public ResponseEntity<?> create(@RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
         if (!file.isEmpty()) {
             Photo photo = new Photo();
-            photo.setUser(usersService.getUser((Long) session.getAttribute("userId")));
+            photo.setUser(usersService.getUser(requireUserId(session)));
             photo.setData(file.getBytes());
             photo.setContentType(file.getContentType());
             photo.setFileName(file.getOriginalFilename());
             photosService.savePhoto(photo);
-        }
-        return "redirect:/gallery";
+            return ResponseEntity.status(HttpStatus.CREATED).body(new PhotoDto(photo.getFileName(), photo.getContentType()));
+        } throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
-    @GetMapping("/photos/{id}/delete")
-    public String delete(@PathVariable Long id, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        Photo photo = photosService.getPhoto(id);
-        if (usersService.getUser(userId) == null || photosService.getPhoto(id) == null || !photo.getUser().getId().equals(userId)) {
-           return "redirect:/gallery";
-        }
+    @DeleteMapping("/api/photos/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id, HttpSession session) {
+        Long userId = requireUserId(session);
+        Photo photo = getPhoto(id);
+        if (!photo.getUser().getId().equals(userId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         photosService.delete(id);
-        return "redirect:/gallery";
+        return ResponseEntity.noContent().build();
     }
-    @GetMapping("/photos/{id}/download")
+    @GetMapping("/api/photos/{id}/download")
     public ResponseEntity<byte[]> download(@PathVariable Long id, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        Photo photo = photosService.getPhoto(id);
-        if (usersService.getUser(userId) == null || photosService.getPhoto(id) == null || !photo.getUser().getId().equals(userId)) return ResponseEntity.notFound().build();
+        Long userId = requireUserId(session);
+        Photo photo = getPhoto(id);
+        if (!photo.getUser().getId().equals(userId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         byte[] data = photo.getData();
+        String contentType = photo.getContentType();
+        MediaType mediaType;
+        try {
+            if (contentType == null || contentType.isBlank()) {
+                mediaType = MediaType.valueOf(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            }
+            else {
+                mediaType = MediaType.valueOf(contentType);
+            }
+        } catch (Exception e) {
+            mediaType = MediaType.valueOf(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment().filename(photo.getFileName()).build());
-        headers.setContentType(MediaType.valueOf(photo.getContentType()));
+        headers.setContentType(mediaType);
         return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
 }

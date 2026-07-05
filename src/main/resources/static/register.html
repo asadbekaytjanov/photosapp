@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login – PhotosApp</title>
+    <title>Sign Up – PhotosApp</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📷</text></svg>">
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="form-page">
 <div class="container">
@@ -13,25 +13,27 @@
         <span class="app-logo">📷</span>
         <h1 class="app-name">PhotosApp V1.0</h1>
     </div>
-    <h2>Log in to your account</h2>
+    <h2>Create your account</h2>
 
-    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div id="errorMessage" class="error" style="display: none;"></div>
 
-    <form th:action="@{/login}" method="post">
+    <form id="registerForm">
         <label>
             Username
-            <input type="text" name="username" placeholder="Enter username" required>
+            <input type="text" id="username" name="username" placeholder="Enter username" required>
         </label>
         <label>
             Password
-            <input type="password" name="password" placeholder="Enter password" required>
+            <input type="password" id="password" name="password" placeholder="Enter password" required>
         </label>
-        <button type="submit">Log in</button>
+        <button type="submit">Register</button>
     </form>
 
     <div class="link">
-        Don't have an account? <a th:href="@{/register}">Register</a>
+        Already have an account? <a href="login.html">Log in</a>
     </div>
 </div>
+
+<script src="js/register.js"></script>
 </body>
 </html>
