@@ -1,37 +1,33 @@
 package uz.aytjanov.googlephotosclone.web;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import uz.aytjanov.googlephotosclone.model.Photo;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import uz.aytjanov.googlephotosclone.model.User;
-import uz.aytjanov.googlephotosclone.service.PhotosService;
 import uz.aytjanov.googlephotosclone.service.UsersService;
 
-@Controller
+import java.util.Map;
+
+@RestController
 public class LoginController {
     private final UsersService usersService;
 
     public LoginController(UsersService usersService) {
         this.usersService = usersService;
     }
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
 
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
+    @PostMapping("/api/login")
+    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         User user = usersService.authenticate(username, password);
         if (user != null) {
             session.setAttribute("username", user.getUsername());
             session.setAttribute("userId", user.getId());
-            model.addAttribute("name", user.getUsername());
-            return "redirect:/gallery";
+            return ResponseEntity.ok(Map.of("username", user.getUsername(), "userId", user.getId()));
         }
-        return "login";
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
     }
 }

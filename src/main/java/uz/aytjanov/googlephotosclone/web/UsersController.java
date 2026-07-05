@@ -1,9 +1,11 @@
 package uz.aytjanov.googlephotosclone.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.aytjanov.googlephotosclone.service.UsersService;
+
+import java.util.Map;
 
 @RestController
 public class UsersController {
@@ -12,14 +14,13 @@ public class UsersController {
    public UsersController(UsersService usersService) {
         this.usersService = usersService;
    }
-   @PostMapping("/register")
-   public String createUser(@RequestParam String username, @RequestParam String password, Model model) {
+   @PostMapping("/api/register")
+   public ResponseEntity<?> createUser(@RequestParam String username, @RequestParam String password) {
        if (usersService.isUserExist(username)) {
-           model.addAttribute("msg", "The username is taken. Try another one");
-           return "register";
+           return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "The username is taken. Try another one"));
        } else {
            usersService.createUser(username, password);
-           return "redirect:/login";
+           return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("username", username));
        }
    }
 }
