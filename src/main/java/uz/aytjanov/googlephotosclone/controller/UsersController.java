@@ -1,4 +1,4 @@
-package uz.aytjanov.googlephotosclone.web;
+package uz.aytjanov.googlephotosclone.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

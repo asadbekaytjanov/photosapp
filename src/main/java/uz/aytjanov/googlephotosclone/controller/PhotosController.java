@@ -1,11 +1,13 @@
-package uz.aytjanov.googlephotosclone.web;
+package uz.aytjanov.googlephotosclone.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import uz.aytjanov.googlephotosclone.model.Photo;
+import uz.aytjanov.googlephotosclone.dto.PhotoListDto;
+import uz.aytjanov.googlephotosclone.dto.ResponseDto;
+import uz.aytjanov.googlephotosclone.entity.Photo;
 import uz.aytjanov.googlephotosclone.service.PhotosService;
 import uz.aytjanov.googlephotosclone.service.UsersService;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class PhotosController {
     private final PhotosService photosService;
     private final UsersService usersService;
+
     private Long requireUserId(HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
@@ -33,17 +36,6 @@ public class PhotosController {
         this.photosService = photosService;
         this.usersService = usersService;
     }
-   public record PhotoListDto (
-           Long id,
-           String fileName,
-           String contentType,
-           String viewUrl
-   ) {}
-   public record PhotoDto (
-           String fileName,
-           String contentType
-   ) {}
-
    @GetMapping("/api/photos")
    public ResponseEntity<?> photos(HttpSession session) {
         Long userId = requireUserId(session);
@@ -85,7 +77,7 @@ public class PhotosController {
             photo.setContentType(file.getContentType());
             photo.setFileName(file.getOriginalFilename());
             photosService.savePhoto(photo);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new PhotoDto(photo.getFileName(), photo.getContentType()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(photo.getFileName(), photo.getContentType()));
         } throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("/api/photos/{id}")

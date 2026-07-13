@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96b51983-a3e6-4be7-a3b6-977f6e4959c8" name="Changes" comment="" />
+    <list default="true" id="96b51983-a3e6-4be7-a3b6-977f6e4959c8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/dto/ResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/GooglePhotosCloneApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/GooglePhotosCloneApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/model/Photo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/entity/Photo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/repository/PhotosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/repository/PhotosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/repository/UsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/repository/UsersRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/service/PhotosService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/service/PhotosService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/service/UsersService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/web/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/web/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/web/PhotosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/controller/PhotosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/web/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uz/aytjanov/googlephotosclone/controller/UsersController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -251,7 +265,12 @@
       <workItem from="1783099665969" duration="4434000" />
       <workItem from="1783164167018" duration="1715000" />
       <workItem from="1783226219244" duration="4197000" />
-      <workItem from="1783271384624" duration="585000" />
+      <workItem from="1783271384624" duration="1788000" />
+      <workItem from="1783423170770" duration="3808000" />
+      <workItem from="1783601393242" duration="2408000" />
+      <workItem from="1783754488666" duration="4326000" />
+      <workItem from="1783862993763" duration="2152000" />
+      <workItem from="1783968318461" duration="1030000" />
     </task>
     <servers />
   </component>
@@ -267,6 +286,17 @@
     <option featureType="dependencySupport" implementationName="java:org.thymeleaf:thymeleaf" />
     <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
     <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

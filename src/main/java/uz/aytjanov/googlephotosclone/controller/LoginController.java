@@ -1,4 +1,4 @@
-package uz.aytjanov.googlephotosclone.web;
+package uz.aytjanov.googlephotosclone.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import uz.aytjanov.googlephotosclone.model.User;
+import uz.aytjanov.googlephotosclone.entity.User;
 import uz.aytjanov.googlephotosclone.service.UsersService;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package uz.aytjanov.googlephotosclone.model;
+package uz.aytjanov.googlephotosclone.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

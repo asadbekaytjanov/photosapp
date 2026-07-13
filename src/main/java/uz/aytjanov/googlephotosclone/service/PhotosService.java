@@ -2,10 +2,8 @@ package uz.aytjanov.googlephotosclone.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import uz.aytjanov.googlephotosclone.model.Photo;
+import uz.aytjanov.googlephotosclone.entity.Photo;
 import uz.aytjanov.googlephotosclone.repository.PhotosRepository;
-
-import java.util.Collections;
 
 @Service
 public class PhotosService {

@@ -1,4 +1,4 @@
-package uz.aytjanov.googlephotosclone.model;
+package uz.aytjanov.googlephotosclone.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
